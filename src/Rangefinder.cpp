@@ -1,5 +1,5 @@
 #include <Rangefinder.h>
-#include <pcint.h>
+#include <PCint.h>
 
 #define ECHO_RECD   0x02
 
@@ -17,7 +17,7 @@ Rangefinder::Rangefinder(uint8_t echo, uint8_t trig)
 // sets up the interface
 void Rangefinder::init(void)
 {
-  // assert ECHO pin is an input
+  // ensure ECHO pin is an input
   pinMode(echoPin, INPUT);
 
   // register the interrupt for the echo

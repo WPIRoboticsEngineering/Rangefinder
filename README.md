@@ -20,4 +20,4 @@ The main classes and functions provided by the library are listed below:
 * void ISR_echo(void);
 
 ## Datasheet
-The datasheet of the HC-SR04 rangefinder can be found [here]([HC-SR04](https://media.digikey.com/pdf/Data%20Sheets/Adafruit%20PDFs/3942_Web.pdf).
+The datasheet of the HC-SR04 rangefinder can be found [here](https://media.digikey.com/pdf/Data%20Sheets/Adafruit%20PDFs/3942_Web.pdf).

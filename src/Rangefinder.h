@@ -60,4 +60,4 @@ public:
 void ISR_Rangefinder(void);
 
 // we declare as extern so we can refer to it in the ISR
-extern Rangefinder rangefinder;
+// extern Rangefinder rangefinder;

@@ -119,10 +119,3 @@ void Rangefinder::ISR_echo(void)
         state |= ECHO_RECD;
     } 
 }
-
-/** A global ISR, which calls Rangefinder::ISR_echo()
- * */
-void ISR_Rangefinder(void)
-{
-    rangefinder.ISR_echo();
-}

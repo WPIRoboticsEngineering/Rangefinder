@@ -79,13 +79,13 @@ uint8_t Rangefinder::checkPingTimer(void)
 uint16_t Rangefinder::checkEcho(void)
 {
     uint16_t echoLength = 0;
+    cli();
     if(state & ECHO_RECD)
     {
-        cli();
         echoLength = pulseEnd - pulseStart;
         state &= ~ECHO_RECD;
-        sei();
     }
+    sei();
 
     return echoLength;
 }

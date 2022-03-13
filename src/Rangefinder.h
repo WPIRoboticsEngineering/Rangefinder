@@ -47,10 +47,10 @@ public:
     // checks to see if an echo is complete
     uint16_t checkEcho(void);
 
-    /** \brief Returns the last recorded distance in cm. The first call to 
-     * getDistance() will return 99.
+    /** \brief Returns true upon receiving a new echo and false otherwise.
+     * The last recorded distance will be stored in distance.
      * */
-    float getDistance(void);
+    bool getDistance(float& distance);
 
     // ISR for the echo pin
     void ISR_echo(void);
@@ -60,4 +60,4 @@ public:
 void ISR_Rangefinder(void);
 
 // we declare as extern so we can refer to it in the ISR
-// extern Rangefinder rangefinder;
+extern Rangefinder rangefinder;

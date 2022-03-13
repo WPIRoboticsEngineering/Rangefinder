@@ -90,15 +90,19 @@ uint16_t Rangefinder::checkEcho(void)
     return echoLength;
 }
 
-float Rangefinder::getDistance(void)
+bool Rangefinder::getDistance(float& distance)
 {
+    bool retVal = false;
+
     uint16_t pulseDur = checkEcho();
-    if(pulseDur) distance = pulseDur / 58.0;
+    if(pulseDur) retVal = true;
+    
+    distance = pulseDur / 58.0;
 
     // After we've checked for an echo, check to send the next ping
     checkPingTimer();
 
-    return distance;
+    return retVal;
 }
 
 /** \brief ISR for the echo pin
@@ -119,3 +123,5 @@ void Rangefinder::ISR_echo(void)
         state |= ECHO_RECD;
     } 
 }
+
+void ISR_Rangefinder(void) { rangefinder.ISR_echo(); }

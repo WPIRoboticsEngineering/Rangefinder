@@ -24,7 +24,7 @@ protected:
     bool checkReadingTimer(void);
 
 public:
-    Rangefinder(void);
+    Rangefinder(void) {}
 
     // must call init()
     virtual void init(void) {}

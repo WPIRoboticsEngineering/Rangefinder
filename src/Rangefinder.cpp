@@ -57,6 +57,7 @@ uint8_t Rangefinder::checkPingTimer(void)
     if(millis() - lastPing >= pingInterval)
     {
         //disable interrupts while we adjust the ISR variables
+        //would be better to just disable this one interrupt, but it would be messy
         cli();
         pulseEnd = pulseStart = 0;
 
@@ -97,6 +98,7 @@ bool Rangefinder::getDistance(float& distance)
     uint16_t pulseDur = checkEcho();
     if(pulseDur) retVal = true;
     
+    // nominal translation as given by the datasheet; adjust as needed
     distance = pulseDur / 58.0;
 
     // After we've checked for an echo, check to send the next ping

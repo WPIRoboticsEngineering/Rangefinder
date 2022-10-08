@@ -26,10 +26,10 @@ protected:
 public:
     Rangefinder(void) {}
 
-    // must call init()
+    // must call init() in your setup() function
     virtual void init(void) {}
 
-    /** \brief Returns true upon receiving a new echo and false otherwise.
+    /** \brief Returns true when there is a new echo and false otherwise.
      * The last recorded distance will be stored in distance.
      * */
     virtual bool getDistance(float& distance) = 0;

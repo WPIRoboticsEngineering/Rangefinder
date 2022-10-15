@@ -8,15 +8,15 @@
  * 
  * getDistance() calls this function, so you don't need to call this function manually.
  */
-bool Rangefinder::checkReadingTimer(void)
-{
-    bool retVal = false;
-    // check if we're ready to ping
-    if(millis() - lastReading >= readingInterval)
-    {
-        lastReading = millis();  
-        retVal = true;
-    }
+// bool Rangefinder::checkReadingTimer(void)
+// {
+//     bool retVal = false;
+//     // check if we're ready to ping
+//     if(millis() - lastReading >= readingInterval)
+//     {
+//         lastReading = millis();  
+//         retVal = true;
+//     }
 
-    return retVal;
-}
+//     return retVal;
+// }

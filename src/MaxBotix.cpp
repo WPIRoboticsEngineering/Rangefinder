@@ -1,20 +1,15 @@
 #include "MaxBotix.h"
 
-#define ECHO_PIN    2
-#define TRIG_PIN    -1
-
-template<uint8_t pin> void MB_ISR(void)
-{
-    MaxBotixT<pin>::mbISR();
-}
-
 void MaxBotix::init(void)
 {
+    Serial.println("MaxBotix::init()");
+
     if(triggerPin != -1) // Arduino will ignore if it's -1, but good practice to check
     {
         //control pin for commanding pings
         pinMode(triggerPin, OUTPUT);
     }
+    Serial.println("/MaxBotix::init()");
 }
 
 void MaxBotix::commandPing(void)

@@ -11,6 +11,8 @@
 #define PING_SENT   0x01
 #define ECHO_RECD   0x02
 
+//void MB1_ISR(void);
+
 class MaxBotix : public Rangefinder
 {
 protected:
@@ -20,35 +22,36 @@ protected:
 public:
     MaxBotix(uint8_t trig = -1) : triggerPin(trig) {}
 
-    void init(void);
+    virtual void init(void);
 
     virtual void commandPing(void);
 };
 
-template<uint8_t p> void MB_ISR(void);
-
-template<uint8_t pin> class MaxBotixT : public MaxBotix
+class MaxBotixPulse : public MaxBotix
 {
 private:
+    uint8_t echoPin;
     volatile uint8_t state  = 0;
 
     volatile uint32_t pulseStart = 0;
     volatile uint32_t pulseEnd = 0;
 
 public:
-    MaxBotixT(uint8_t trig = -1) : MaxBotix(trig) {}
+    MaxBotixPulse(uint8_t echo, uint8_t trig = -1) : MaxBotix(trig) {echoPin = echo;}
 
-    void init(void)
+    virtual void init(void)
     {
+        Serial.println("MaxBotixT::init()");
         MaxBotix::init();
 
-        pinMode(pin, INPUT);
-        attachInterrupt(digitalPinToInterrupt(pin), MB_ISR<pin>, CHANGE);
+        pinMode(echoPin, INPUT);
+        Serial.println("/MaxBotixT::init()");
     }
 
     virtual bool getDistance(float& distance)
     {
         bool newReading = false;
+       
         if(state & ECHO_RECD)
         {
             state &= ~ECHO_RECD;  //cli???
@@ -63,12 +66,13 @@ public:
 
     void mbISR(void)
     {
-        if(digitalRead(pin))  //transitioned to HIGH
+        if(digitalRead(echoPin))    //transitioned to HIGH
         {
             pulseStart = micros();
+            state |= PING_SENT;
         }
 
-        else                        //transitioned to LOW
+        else                    //transitioned to LOW
         {
             pulseEnd = micros();
             state |= ECHO_RECD;
@@ -101,6 +105,6 @@ public:
     bool getDistance(float& distance);
 };
 
-extern MaxBotixT<15> mb15;
+//extern MaxBotixT<1> mb1;
 
 #endif

@@ -16,10 +16,6 @@ public:
     // must define init(); call init() in your setup() function
     virtual void init(void) = 0;
 
-    /** \brief Commands a ping
-     * */
-    virtual void commandPing(void) = 0;
-
     /** \brief Returns true when there is a new echo and false otherwise.
      * The last recorded distance will be stored in distance.
      * */

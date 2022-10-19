@@ -1,5 +1,4 @@
-#ifndef __MAXBOTIX_H
-#define __MAXBOTIX_H
+#pragma once
 
 /*
  * Datasheet: https://www.maxbotix.com/documents/LV-MaxSonar-EZ_Datasheet.pdf
@@ -11,8 +10,6 @@
 #define PING_SENT   0x01
 #define ECHO_RECD   0x02
 
-//void MB1_ISR(void);
-
 class MaxBotix : public Rangefinder
 {
 protected:
@@ -23,7 +20,6 @@ public:
     MaxBotix(uint8_t trig = -1) : triggerPin(trig) {}
 
     virtual void init(void);
-
     virtual void commandPing(void);
 };
 
@@ -104,7 +100,3 @@ public:
 
     bool getDistance(float& distance);
 };
-
-//extern MaxBotixT<1> mb1;
-
-#endif

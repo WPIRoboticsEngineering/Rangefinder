@@ -38,7 +38,20 @@ public:
 
     virtual bool getDistance(float& distance);
 
-    inline void mbISR(void);
+    inline void mbISR(void)
+    {
+        if(digitalRead(echoPin))    //transitioned to HIGH
+        {
+            pulseStart = micros();
+            state |= PING_SENT;
+        }
+
+        else                    //transitioned to LOW
+        {
+            pulseEnd = micros();
+            state |= ECHO_RECD;
+        } 
+    }
 };
 
 class MaxBotixAnalog : public MaxBotix

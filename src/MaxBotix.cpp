@@ -52,21 +52,6 @@ bool MaxBotixPulse::getDistance(float& distance)
     return newReading;
 }
 
-void MaxBotixPulse::mbISR(void)
-{
-    if(digitalRead(echoPin))    //transitioned to HIGH
-    {
-        pulseStart = micros();
-        state |= PING_SENT;
-    }
-
-    else                    //transitioned to LOW
-    {
-        pulseEnd = micros();
-        state |= ECHO_RECD;
-    } 
-}
-
 bool MaxBotixAnalog::getDistance(float& distance)
 {
     bool newReading = false;

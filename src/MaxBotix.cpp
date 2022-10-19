@@ -55,8 +55,10 @@ bool MaxBotixPulse::getDistance(float& distance)
 bool MaxBotixAnalog::getDistance(float& distance)
 {
     bool newReading = false;
-    if(millis() - lastPing >= ADC_INTERVAL)
+    uint32_t currTime = millis();
+    if(currTime - lastPing >= ADC_INTERVAL)
     {
+        lastPing = currTime;
         uint16_t adcResult = analogRead(adcPin);
         distance = adcResult; //TODO
 

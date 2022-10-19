@@ -72,7 +72,7 @@ private:
 
 public:
     MaxBotixSerial(uint8_t trig = -1) : MaxBotix(trig) {}
-    void init(void) {MaxBotix::init(); Serial1.begin(9600);}
+    void init(void) {MaxBotix::init(); Serial1.begin(115200);}
 
     bool getDistance(float& distance);
 };

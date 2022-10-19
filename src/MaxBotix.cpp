@@ -27,6 +27,46 @@ void MaxBotix::commandPing(void)
 
 const uint32_t ADC_INTERVAL = 40;
 
+void MaxBotixPulse::init(void)
+{
+    Serial.println("MaxBotixT::init()");
+    MaxBotix::init();
+
+    pinMode(echoPin, INPUT);
+    Serial.println("/MaxBotixT::init()");
+}
+
+bool MaxBotixPulse::getDistance(float& distance)
+{
+    bool newReading = false;
+    
+    if(state & ECHO_RECD)
+    {
+        state &= ~ECHO_RECD;  //cli???
+        uint16_t echoLength = pulseEnd - pulseStart;
+
+        distance = echoLength;
+        newReading = true;
+    }
+
+    return newReading;
+}
+
+void MaxBotixPulse::mbISR(void)
+{
+    if(digitalRead(echoPin))    //transitioned to HIGH
+    {
+        pulseStart = micros();
+        state |= PING_SENT;
+    }
+
+    else                    //transitioned to LOW
+    {
+        pulseEnd = micros();
+        state |= ECHO_RECD;
+    } 
+}
+
 bool MaxBotixAnalog::getDistance(float& distance)
 {
     bool newReading = false;

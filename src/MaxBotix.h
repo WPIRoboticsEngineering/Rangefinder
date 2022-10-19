@@ -34,47 +34,11 @@ private:
 
 public:
     MaxBotixPulse(uint8_t echo, uint8_t trig = -1) : MaxBotix(trig) {echoPin = echo;}
+    virtual void init(void);
 
-    virtual void init(void)
-    {
-        Serial.println("MaxBotixT::init()");
-        MaxBotix::init();
+    virtual bool getDistance(float& distance);
 
-        pinMode(echoPin, INPUT);
-        Serial.println("/MaxBotixT::init()");
-    }
-
-    virtual bool getDistance(float& distance)
-    {
-        bool newReading = false;
-       
-        if(state & ECHO_RECD)
-        {
-            state &= ~ECHO_RECD;  //cli???
-            uint16_t echoLength = pulseEnd - pulseStart;
-
-            distance = echoLength;
-            newReading = true;
-        }
-
-        return newReading;
-    }
-
-    void mbISR(void)
-    {
-        if(digitalRead(echoPin))    //transitioned to HIGH
-        {
-            pulseStart = micros();
-            state |= PING_SENT;
-        }
-
-        else                    //transitioned to LOW
-        {
-            pulseEnd = micros();
-            state |= ECHO_RECD;
-        } 
-    }
-
+    inline void mbISR(void);
 };
 
 class MaxBotixAnalog : public MaxBotix
@@ -84,7 +48,7 @@ private:
 public:
     MaxBotixAnalog(uint8_t adc, uint8_t trig = -1) : MaxBotix(trig) {adcPin = adc;}
     virtual void init(void) {MaxBotix::init(); pinMode(adcPin, INPUT);}
-    //void commandPing(void) {MaxBotix::commandPing();}
+    
     bool getDistance(float& distance);
 };
 
@@ -95,7 +59,6 @@ private:
 
 public:
     MaxBotixSerial(uint8_t trig = -1) : MaxBotix(trig) {}
-
     void init(void) {MaxBotix::init(); Serial1.begin(9600);}
 
     bool getDistance(float& distance);

@@ -3,6 +3,9 @@
 #include <Arduino.h>
 #include <Rangefinder.h>
 
+#define ECHO    0
+#define TRIG    4
+
 /** \class HC_SR04 
  * \brief A class to manage the HC-SR04 ultrasonic rangefinder. 
  * 
@@ -44,3 +47,5 @@ public:
     // ISR for the echo pin
     void ISR_echo(void);
 };
+
+extern HC_SR04 hc_sr04;

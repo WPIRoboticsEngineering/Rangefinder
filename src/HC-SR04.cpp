@@ -3,8 +3,10 @@
 
 #define ECHO_RECD   0x02
 
+HC_SR04 hc_sr04(ECHO, TRIG);
+
 // ISR for the echo
-void ISR_HC_SR04(void);
+void ISR_HC_SR04(void) {hc_sr04.ISR_echo();}
 
 /** \brief Constructor.
  * 

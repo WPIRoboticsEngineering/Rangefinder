@@ -25,22 +25,6 @@ void HC_SR04::init(void)
   // ensure ECHO pin is an input
   pinMode(echoPin, INPUT);
 
-  // register the interrupt for the echo
-  if(digitalPinToInterrupt(echoPin) != NOT_AN_INTERRUPT)
-  {
-    Serial.println("Attaching rangefinder ISR");
-    attachInterrupt(digitalPinToInterrupt(echoPin), ::ISR_HC_SR04, CHANGE);
-  }
-  else if(digitalPinToPCInterrupt(echoPin) != NOT_AN_INTERRUPT)
-  {
-    Serial.println("Attaching rangefinder PC_ISR");
-    attachPCInt(digitalPinToPCInterrupt(echoPin), ::ISR_HC_SR04);
-  }
-  else
-  {
-    Serial.println("Not a rangefinder interrupt pin!");
-  }
-
   //control pin for commanding pings must be an output
   pinMode(trigPin, OUTPUT);
 }

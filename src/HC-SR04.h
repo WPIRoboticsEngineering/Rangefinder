@@ -3,9 +3,6 @@
 #include <Arduino.h>
 #include <Rangefinder.h>
 
-#define ECHO    0
-#define TRIG    4
-
 /** \class HC_SR04 
  * \brief A class to manage the HC-SR04 ultrasonic rangefinder. 
  * 

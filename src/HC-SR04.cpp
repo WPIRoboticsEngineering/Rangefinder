@@ -3,6 +3,9 @@
 
 #define ECHO_RECD   0x02
 
+#define ECHO    0
+#define TRIG    4
+
 HC_SR04 hc_sr04(ECHO, TRIG);
 
 // ISR for the echo

@@ -15,19 +15,11 @@ HC_SR04::HC_SR04(uint8_t echo, uint8_t trig) : Rangefinder()
 {
     echoPin = echo;
     trigPin = trig;
-
-    // we set the ping interval to 10 ms, but it won't actually ping that fast
-    // since it _only_ pings if the ECHO pin is low -- that is, it will ping
-    // in 10 ms or when the last echo is done, whichever is _longer_ 
-    readingInterval = 10;    
 }
 
 // sets up the interface
 void HC_SR04::init(void)
 {
-  //call base class's init
-  Rangefinder::init();
-
   // ensure ECHO pin is an input
   pinMode(echoPin, INPUT);
 
@@ -59,63 +51,43 @@ void HC_SR04::init(void)
  * 
  * getDistance() calls this function, so you don't need to call this function manually.
  */
-bool HC_SR04::ping(void)
+void HC_SR04::commandPing(void)
 {
-    bool pingSent = false;
-
-    // check if we're timer has expired
-    if(checkReadingTimer())
+    //check if echo has been received -- only send if ECHO is LOW
+    if(!digitalRead(echoPin))
     {
-        //check if echo has been received
-        if(!digitalRead(echoPin))
-        {
-            //disable interrupts while we adjust the ISR variables
-            //would be better to just disable this one interrupt, but it would be messy
-            cli();
-            pulseEnd = pulseStart = 0;
+        //disable interrupts while we adjust the ISR variables
+        //would be better to just disable this one interrupt, but it would be messy
+        cli();
+        pulseEnd = pulseStart = 0;
 
-            //clear out any leftover states
-            state = 0;
-            sei();
+        //clear out any leftover states
+        state = 0;
+        sei();
 
-            // toggle the trigger pin to send a chirp
-            digitalWrite(trigPin, HIGH); //commands a ping; leave high for the duration
-            delayMicroseconds(30); //datasheet says hold HIGH for >20us; we'll use 30 to be 'safe'
-            digitalWrite(trigPin, LOW); //unclear if pin has to stay HIGH
-
-            pingSent = true;
-        }
+        // toggle the trigger pin to send a chirp
+        digitalWrite(trigPin, HIGH); //commands a ping; leave high for the duration
+        delayMicroseconds(30); //datasheet says hold HIGH for >20us; we'll use 30 to be 'safe'
+        digitalWrite(trigPin, LOW); //unclear if pin has to stay HIGH
     }
-
-    return pingSent;
-}
-
-uint16_t HC_SR04::checkEcho(void)
-{
-    uint16_t echoLength = 0;
-    cli();
-    if(state & ECHO_RECD)
-    {
-        echoLength = pulseEnd - pulseStart;
-        state &= ~ECHO_RECD;
-    }
-    sei();
-
-    return echoLength;
 }
 
 bool HC_SR04::getDistance(float& distance)
 {
     bool retVal = false;
 
-    uint16_t pulseDur = checkEcho();
-    if(pulseDur) retVal = true;
+    uint16_t echoLength = 0;
+    cli();
+    if(state & ECHO_RECD)
+    {
+        echoLength = pulseEnd - pulseStart;
+        state &= ~ECHO_RECD;
+        retVal = true;
+    }
+    sei();
     
     // nominal translation as given by the datasheet; adjust as needed
-    distance = pulseDur / 58.0;
-
-    // After we've checked for an echo, check to send the next ping
-    ping();
+    distance = echoLength / 58.0;
 
     return retVal;
 }

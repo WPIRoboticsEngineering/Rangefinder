@@ -31,12 +31,12 @@ public:
     // must call init() to set up pins and interrupts
     void init(void);
 
-protected:
+//protected:
     // checks to see if it's time to emit a ping
-    bool ping(void);
+    void commandPing(void);
 
     // checks to see if an echo is complete
-    uint16_t checkEcho(void);
+    //uint16_t checkEcho(void);
 
 public:
     /** \brief Returns true upon receiving a new echo and false otherwise.

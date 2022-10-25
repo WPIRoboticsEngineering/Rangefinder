@@ -110,5 +110,3 @@ void HC_SR04::ISR_echo(void)
         state |= ECHO_RECD;
     } 
 }
-
-void ISR_HC_SR04(void) { hc_sr04.ISR_echo(); }

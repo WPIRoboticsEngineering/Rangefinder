@@ -44,6 +44,3 @@ public:
     // ISR for the echo pin
     void ISR_echo(void);
 };
-
-// we declare as extern so we can refer to it in the ISR
-extern HC_SR04 hc_sr04;

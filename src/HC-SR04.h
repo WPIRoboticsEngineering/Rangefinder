@@ -35,9 +35,6 @@ public:
     // checks to see if it's time to emit a ping
     void commandPing(void);
 
-    // checks to see if an echo is complete
-    //uint16_t checkEcho(void);
-
 public:
     /** \brief Returns true upon receiving a new echo and false otherwise.
      * The last recorded distance will be stored in distance.

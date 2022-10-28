@@ -1,6 +1,6 @@
 #include <Sharp-IR.h>
 
-const uint32_t SHARP_IR_INTERVAL = 1000;
+const uint32_t SHARP_IR_INTERVAL = 50;
 
 bool SharpIR::getDistance(float& distance)
 {

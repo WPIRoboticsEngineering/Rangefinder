@@ -44,18 +44,12 @@ void HC_SR04::init(void)
     Serial.println("Not a rangefinder interrupt pin!");
   }
 
-
   //control pin for commanding pings must be an output
   pinMode(trigPin, OUTPUT);
 }
 
 /**
- * \brief sendPingIfReady() checks to see if it's time to send a new ping.
- * 
- * You can make the pingInterval arbitrarily small, since it won't send a ping
- * if the ECHO pin is HIGH.
- * 
- * getDistance() calls this function, so you don't need to call this function manually.
+ * \brief commandPing() sends a ping. It checks to see if the ECHO is LOW
  */
 void HC_SR04::commandPing(void)
 {
@@ -73,7 +67,7 @@ void HC_SR04::commandPing(void)
 
         // toggle the trigger pin to send a chirp
         digitalWrite(trigPin, HIGH); //commands a ping; leave high for the duration
-        delayMicroseconds(30); //datasheet says hold HIGH for >20us; we'll use 30 to be 'safe'
+        delayMicroseconds(20); //datasheet says hold HIGH for >10us; we'll use 20 to be 'safe'
         digitalWrite(trigPin, LOW); //unclear if pin has to stay HIGH
     }
 }

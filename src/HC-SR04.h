@@ -31,7 +31,7 @@ public:
     // must call init() to set up pins and interrupts
     void init(void);
 
-    // checks to see if it's time to emit a ping
+    // command a ping -- need to call the regularly
     void commandPing(void);
 
 public:

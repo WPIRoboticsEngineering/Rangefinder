@@ -61,7 +61,7 @@ void HC_SR04::commandPing(void)
       // check that at least 5 ms has expired since the pin went LOW to let echoes die out
       if(currTime - lastPingCheck > 5)
       {
-          lastPingCheck = currTime;
+          lastPingCheck = currTime; // update lastPingCheck
 
           //disable interrupts while we adjust the ISR variables
           cli();
@@ -78,7 +78,7 @@ void HC_SR04::commandPing(void)
       }
     }
 
-    else lastPingCheck = currTime; // update the pingWait
+    else lastPingCheck = currTime; // update lastPingCheck
 }
 
 bool HC_SR04::getDistance(float& distance)

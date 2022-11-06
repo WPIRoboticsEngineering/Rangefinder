@@ -25,6 +25,9 @@ protected:
     volatile uint32_t pulseStart = 0;
     volatile uint32_t pulseEnd = 0;
 
+    // lastPingCheck tracks the last time we checked to send a ping to avoid interference
+    uint32_t lastPingCheck = 0;
+
 public:
     HC_SR04(uint8_t echo, uint8_t trig);
 

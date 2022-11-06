@@ -53,35 +53,45 @@ void HC_SR04::init(void)
  */
 void HC_SR04::commandPing(void)
 {
-    //check if echo has been received -- only send if ECHO is LOW
+    uint32_t currTime = millis();
+
+    // only ping if ECHO is LOW
     if(!digitalRead(echoPin))
     {
-        //disable interrupts while we adjust the ISR variables
-        //would be better to just disable this one interrupt, but it would be messy
-        cli();
-        pulseEnd = pulseStart = 0;
+      // check that at least 5 ms has expired since the pin went LOW to let echoes die out
+      if(currTime - lastPingCheck > 5)
+      {
+          lastPingCheck = currTime;
 
-        //clear out any leftover states
-        state = 0;
-        sei();
+          //disable interrupts while we adjust the ISR variables
+          cli();
+          pulseEnd = pulseStart = 0;
 
-        // toggle the trigger pin to send a chirp
-        digitalWrite(trigPin, HIGH); //commands a ping; leave high for the duration
-        delayMicroseconds(20); //datasheet says hold HIGH for >10us; we'll use 20 to be 'safe'
-        digitalWrite(trigPin, LOW); //unclear if pin has to stay HIGH
+          //clear out any leftover states
+          state = 0;
+          sei();
+
+          // toggle the trigger pin to send a chirp
+          digitalWrite(trigPin, HIGH); //commands a ping; leave high for the duration
+          delayMicroseconds(20); //datasheet says hold HIGH for >10us; we'll use 20 to be 'safe'
+          digitalWrite(trigPin, LOW); //unclear if pin has to stay HIGH
+      }
     }
+
+    else lastPingCheck = currTime; // update the pingWait
 }
 
 bool HC_SR04::getDistance(float& distance)
 {
     bool retVal = false;
 
-    uint16_t echoLength = 0;
+    uint32_t echoLength = 0;
     cli();
     if(state & ECHO_RECD)
     {
         echoLength = pulseEnd - pulseStart;
         state &= ~ECHO_RECD;
+
         retVal = true;
     }
     sei();

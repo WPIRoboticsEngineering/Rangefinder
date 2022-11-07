@@ -4,7 +4,7 @@
 #define ECHO_RECD   0x02
 
 #define ECHO    0
-#define TRIG    4
+#define TRIG    A2
 
 HC_SR04 hc_sr04(ECHO, TRIG);
 

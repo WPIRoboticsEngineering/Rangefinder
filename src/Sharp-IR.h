@@ -1,6 +1,6 @@
 #pragma once
 /*
- * Datasheet: 
+ * Datasheet: https://www.sparkfun.com/datasheets/Components/GP2Y0A21YK.pdf
  */
 
 #include <Arduino.h>

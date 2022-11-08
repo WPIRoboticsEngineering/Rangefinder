@@ -16,6 +16,10 @@ bool SharpIR::getDistance(float& distance)
         float inv = (voltage - 0.127) / 20.81; if(inv < 0.01) inv = 0.01;
         distance = 1.0 / inv;
 
+#ifdef __SHARP_DEBUG__
+        Serial.println(distance);
+#endif
+
         newReading = true;
     }
 

@@ -11,6 +11,8 @@ bool SharpIR::getDistance(float& distance)
         lastReading = currTime;
 
         uint16_t adcResult = analogRead(adcPin);
+        Serial.print(adcResult);
+        Serial.print('\t');
         distance = adcResult; //TODO
         float voltage = 5 * adcResult / 1024.;
         float inv = (voltage - 0.127) / 20.81; if(inv < 0.01) inv = 0.01;

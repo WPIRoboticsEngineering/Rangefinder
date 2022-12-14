@@ -2,7 +2,7 @@
 #include <PCint.h>
 #include <Sharp-IR.h>
 
-SharpIR sharpIR(A0);
+SharpIR sharpIR(A1);
 
 void setup() 
 {

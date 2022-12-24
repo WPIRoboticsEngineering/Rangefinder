@@ -4,17 +4,13 @@
 
 Romi32U4ButtonA buttonA;
 
-void ISR_HC_0(void);
 HC_SR04 hc_0(0, A2);
-
 void ISR_HC_0(void)
 {
   hc_0.ISR_echo();
 }
 
-void ISR_HC_1(void);
 HC_SR04 hc_1(1, 4);
-
 void ISR_HC_1(void)
 {
   hc_1.ISR_echo();

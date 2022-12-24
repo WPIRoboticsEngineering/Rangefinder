@@ -3,21 +3,14 @@
 
 #define ECHO_RECD   0x02
 
-// #define ECHO    0
-// #define TRIG    4
-
-HC_SR04 hc_sr04(ECHO, TRIG);
-
-// ISR for the echo
-void ISR_HC_SR04(void) {hc_sr04.ISR_echo();}
-
 /** \brief Constructor.
  * 
  * @param echo The echo pin. Must be interrupt enabled. PCInts OK.
  * @param trig The trigger pin.
  * */
-HC_SR04::HC_SR04(uint8_t echo, uint8_t trig) : Rangefinder()
+HC_SR04::HC_SR04(uint8_t echo, uint8_t trig, void (*isr)(void)) : Rangefinder()
 {
+    ISR_HC_SR04 = isr;
     echoPin = echo;
     trigPin = trig;
 }
@@ -25,6 +18,12 @@ HC_SR04::HC_SR04(uint8_t echo, uint8_t trig) : Rangefinder()
 // sets up the interface
 void HC_SR04::init(void)
 {
+  if(!ISR_HC_SR04)
+  {
+    Serial.println("No ISR defined!");
+    return;
+  }
+
   // ensure ECHO pin is an input
   pinMode(echoPin, INPUT);
 
@@ -70,6 +69,10 @@ void HC_SR04::commandPing(void)
           //clear out any leftover states
           state = 0;
           sei();
+
+#ifdef __HC_DEBUG__
+          Serial.println("Ping");
+#endif
 
           // toggle the trigger pin to send a chirp
           digitalWrite(trigPin, HIGH); //commands a ping; leave high for the duration

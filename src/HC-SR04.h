@@ -28,8 +28,10 @@ protected:
     // lastPingCheck tracks the last time we checked to send a ping to avoid interference
     uint32_t lastPingCheck = 0;
 
+    void (*ISR_HC_SR04)(void) = 0;
+
 public:
-    HC_SR04(uint8_t echo, uint8_t trig);
+    HC_SR04(uint8_t echo, uint8_t trig, void (*isr)(void));
 
     // must call init() to set up pins and interrupts
     void init(void);
@@ -46,5 +48,3 @@ public:
     // ISR for the echo pin
     void ISR_echo(void);
 };
-
-extern HC_SR04 hc_sr04;

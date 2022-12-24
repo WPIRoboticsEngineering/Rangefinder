@@ -4,23 +4,55 @@
 
 Romi32U4ButtonA buttonA;
 
+void ISR_HC_0(void);
+HC_SR04 hc_0(0, A2, ISR_HC_0);
+
+void ISR_HC_0(void)
+{
+  hc_0.ISR_echo();
+}
+
+void ISR_HC_1(void);
+HC_SR04 hc_1(1, 4, ISR_HC_1);
+
+void ISR_HC_1(void)
+{
+  hc_1.ISR_echo();
+}
+
 void setup() 
 {
   Serial.begin(115200);
+  delay(100);
+  while(!Serial) {}
+
   Serial.print("Welcome!\n");
   
-  hc_sr04.init();
+  hc_0.init();
+  hc_1.init();
 }
 
 void loop()
 {
   float distance = 0;
-  if(hc_sr04.getDistance(distance))
+  if(hc_0.getDistance(distance))
   {
     Serial.print(millis());
-    Serial.print('\t');
+    Serial.print("\tHC0\t");
     Serial.println(distance);
   }
 
-  if(buttonA.isPressed()) hc_sr04.commandPing();
+  if(hc_1.getDistance(distance))
+  {
+    Serial.print(millis());
+    Serial.print("\tHC1\t");
+    Serial.println(distance);
+  }
+
+  if(buttonA.getSingleDebouncedPress()) 
+    {
+      //Serial.println("Just one ping."); 
+      hc_0.commandPing();
+      hc_1.commandPing();
+    }
 }

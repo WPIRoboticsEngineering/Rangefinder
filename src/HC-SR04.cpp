@@ -92,6 +92,8 @@ bool HC_SR04::getDistance(float& distance)
         echoLength = pulseEnd - pulseStart;
         state &= ~ECHO_RECD;
 
+        lastPingCheck = millis(); // this will assert a pause after receiving an echo
+
         retVal = true;
     }
     sei();

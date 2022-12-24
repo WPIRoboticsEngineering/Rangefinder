@@ -28,13 +28,13 @@ protected:
     // lastPingCheck tracks the last time we checked to send a ping to avoid interference
     uint32_t lastPingCheck = 0;
 
-    void (*ISR_HC_SR04)(void) = 0;
+    //void (*ISR_HC_SR04)(void) = 0;
 
 public:
-    HC_SR04(uint8_t echo, uint8_t trig, void (*isr)(void));
+    HC_SR04(uint8_t echo, uint8_t trig);
 
     // must call init() to set up pins and interrupts
-    void init(void);
+    void init(void (*isr)(void));
 
     // command a ping -- need to call the regularly
     void commandPing(void);

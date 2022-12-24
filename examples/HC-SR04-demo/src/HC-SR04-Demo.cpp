@@ -5,7 +5,7 @@
 Romi32U4ButtonA buttonA;
 
 void ISR_HC_0(void);
-HC_SR04 hc_0(0, A2, ISR_HC_0);
+HC_SR04 hc_0(0, A2);
 
 void ISR_HC_0(void)
 {
@@ -13,7 +13,7 @@ void ISR_HC_0(void)
 }
 
 void ISR_HC_1(void);
-HC_SR04 hc_1(1, 4, ISR_HC_1);
+HC_SR04 hc_1(1, 4);
 
 void ISR_HC_1(void)
 {
@@ -28,8 +28,8 @@ void setup()
 
   Serial.print("Welcome!\n");
   
-  hc_0.init();
-  hc_1.init();
+  hc_0.init(ISR_HC_0);
+  hc_1.init(ISR_HC_1);
 }
 
 void loop()

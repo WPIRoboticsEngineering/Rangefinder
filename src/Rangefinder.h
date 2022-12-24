@@ -14,7 +14,7 @@ public:
     Rangefinder(void) {}
 
     // must define init(); call init() in your setup() function
-    virtual void init(void) = 0;
+    // void init(void);
 
     /** \brief Returns true when there is a new echo and false otherwise.
      * The last recorded distance will be stored in distance.

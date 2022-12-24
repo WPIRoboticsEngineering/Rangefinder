@@ -8,17 +8,17 @@
  * @param echo The echo pin. Must be interrupt enabled. PCInts OK.
  * @param trig The trigger pin.
  * */
-HC_SR04::HC_SR04(uint8_t echo, uint8_t trig, void (*isr)(void)) : Rangefinder()
+HC_SR04::HC_SR04(uint8_t echo, uint8_t trig) : Rangefinder()
 {
-    ISR_HC_SR04 = isr;
+//    ISR_HC_SR04 = isr;
     echoPin = echo;
     trigPin = trig;
 }
 
 // sets up the interface
-void HC_SR04::init(void)
+void HC_SR04::init(void (*isr)(void))
 {
-  if(!ISR_HC_SR04)
+  if(!isr)
   {
     Serial.println("No ISR defined!");
     return;
@@ -31,12 +31,12 @@ void HC_SR04::init(void)
   if(digitalPinToInterrupt(echoPin) != NOT_AN_INTERRUPT)
   {
     Serial.println("Attaching rangefinder ISR");
-    attachInterrupt(digitalPinToInterrupt(echoPin), ISR_HC_SR04, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(echoPin), isr, CHANGE);
   }
   else if(digitalPinToPCInterrupt(echoPin) != NOT_AN_INTERRUPT)
   {
     Serial.println("Attaching rangefinder PC_ISR");
-    attachPCInt(digitalPinToPCInterrupt(echoPin), ISR_HC_SR04);
+    attachPCInt(digitalPinToPCInterrupt(echoPin), isr);
   }
   else
   {

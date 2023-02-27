@@ -104,6 +104,8 @@ bool HC_SR04::getDistance(float& distance)
     // nominal translation as given by the datasheet; adjust as needed
     distance = echoLength / 58.0;
 
+    commandPing();
+
     return retVal;
 }
 

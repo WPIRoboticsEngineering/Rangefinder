@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <MaxBotix.h>
 
-MaxBotixAnalog mbAnalog(A0);
+MaxBotixAnalog mbAnalog(-1); // TODO: Choose your pin
 
 void setup() 
 {

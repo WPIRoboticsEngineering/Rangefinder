@@ -34,7 +34,7 @@ private:
 
 public:
     MaxBotixPulse(uint8_t echo, uint8_t trig = -1) : MaxBotix(trig) {echoPin = echo;}
-    virtual void init(void);
+    virtual void init(void (*isr)(void));
 
     virtual bool getDistance(float& distance);
 

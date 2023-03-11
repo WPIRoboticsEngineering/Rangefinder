@@ -1,4 +1,5 @@
 #include "MaxBotix.h"
+#include <PCint.h>
 
 void MaxBotix::init(void)
 {
@@ -25,15 +26,30 @@ void MaxBotix::commandPing(void)
     }
 }
 
-const uint32_t ADC_INTERVAL = 40;
-
-void MaxBotixPulse::init(void)
+void MaxBotixPulse::init(void (*isr)(void))
 {
-    Serial.println("MaxBotixT::init()");
+    Serial.println("MaxBotixPulse::init()");
     MaxBotix::init();
 
     pinMode(echoPin, INPUT);
-    Serial.println("/MaxBotixT::init()");
+
+    if(digitalPinToInterrupt(echoPin) != NOT_AN_INTERRUPT)
+    {
+        Serial.println(F("Attaching ISR"));
+        attachInterrupt(digitalPinToInterrupt(echoPin), isr, CHANGE);
+    }
+    else if(digitalPinToPCInterrupt(echoPin) != NOT_AN_INTERRUPT)
+    {
+        Serial.print(F("Attaching PC_ISR to PCINT"));
+        Serial.println(digitalPinToPCInterrupt(echoPin));
+        attachPCInt(digitalPinToPCInterrupt(echoPin), isr);
+    }
+    else
+    {
+        Serial.println(F("Not an interrupt pin!"));
+    }
+
+    Serial.println("/MaxBotixPulse::init()");
 }
 
 bool MaxBotixPulse::getDistance(float& distance)
@@ -42,15 +58,20 @@ bool MaxBotixPulse::getDistance(float& distance)
     
     if(state & ECHO_RECD)
     {
-        state &= ~ECHO_RECD;  //cli???
-        uint16_t echoLength = pulseEnd - pulseStart;
+        cli();
+        state &= ~ECHO_RECD;
 
-        distance = echoLength;
+        uint16_t echoLength = pulseEnd - pulseStart;
+        sei();
+
+        distance = echoLength; // TODO: Edit to calculate distance
         newReading = true;
     }
 
     return newReading;
 }
+
+const uint32_t ADC_INTERVAL = 250;
 
 bool MaxBotixAnalog::getDistance(float& distance)
 {
@@ -60,7 +81,7 @@ bool MaxBotixAnalog::getDistance(float& distance)
     {
         lastPing = currTime;
         uint16_t adcResult = analogRead(adcPin);
-        distance = adcResult; //TODO
+        distance = adcResult; // TODO: Edit to calculate distance
 
         newReading = true;
     }

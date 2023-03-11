@@ -1,54 +1,33 @@
+/**
+ * Here we use the same construction as the MaxBotix, namely we create a global void (*fxn)(void) 
+ * to pass to init(). Doing so allow us to avoid using externs, as well as easily add multiple 
+ * sensors.
+*/
+
 #include <Arduino.h>
 #include <HC-SR04.h>
-#include <Romi32U4Buttons.h>
 
-Romi32U4ButtonA buttonA;
-
-HC_SR04 hc_0(0, A2);
+HC_SR04 hc_sr04(-1, -1); // TODO: Choose your pins.
 void ISR_HC_0(void)
 {
-  hc_0.ISR_echo();
-}
-
-HC_SR04 hc_1(1, 4);
-void ISR_HC_1(void)
-{
-  hc_1.ISR_echo();
+  hc_sr04.ISR_echo();
 }
 
 void setup() 
 {
   Serial.begin(115200);
-  delay(100);
-  while(!Serial) {}
-
   Serial.print("Welcome!\n");
   
-  hc_0.init(ISR_HC_0);
-  hc_1.init(ISR_HC_1);
+  hc_sr04.init(ISR_HC_0);
 }
 
 void loop()
 {
   float distance = 0;
-  if(hc_0.getDistance(distance))
+  if(hc_sr04.getDistance(distance))
   {
     Serial.print(millis());
-    Serial.print("\tHC0\t");
+    Serial.print("\tHC:\t");
     Serial.println(distance);
   }
-
-  if(hc_1.getDistance(distance))
-  {
-    Serial.print(millis());
-    Serial.print("\tHC1\t");
-    Serial.println(distance);
-  }
-
-  if(buttonA.getSingleDebouncedPress()) 
-    {
-      //Serial.println("Just one ping."); 
-      hc_0.commandPing();
-      hc_1.commandPing();
-    }
 }

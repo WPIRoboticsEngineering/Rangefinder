@@ -10,7 +10,6 @@
  * */
 HC_SR04::HC_SR04(uint8_t echo, uint8_t trig) : Rangefinder()
 {
-//    ISR_HC_SR04 = isr;
     echoPin = echo;
     trigPin = trig;
 }
@@ -102,7 +101,7 @@ bool HC_SR04::getDistance(float& distance)
     sei();
     
     // nominal translation as given by the datasheet; adjust as needed
-    distance = echoLength / 58.0;
+    distance = echoLength; // TODO: conversion factor
 
     commandPing();
 

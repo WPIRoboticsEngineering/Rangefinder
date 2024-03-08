@@ -39,7 +39,11 @@ void HC_SR04::init(void (*isr)(void))
   }
   else
   {
-    Serial.println("Not a rangefinder interrupt pin!");
+    while(true)
+    {
+      Serial.println("Not a rangefinder interrupt pin!");
+      delay(500);
+    }
   }
 
   //control pin for commanding pings must be an output
